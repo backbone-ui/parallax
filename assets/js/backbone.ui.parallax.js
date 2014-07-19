@@ -33,22 +33,18 @@
 			// start animation loop	
 			// this.tick();
 			console.log("I'm parallaxing here");
-			
-			
-			
-    		_.bindAll(this, 'keyAction');
+			_.bindAll(this, 'keyAction');
     		$(document).bind('keydown', this.keyAction);
-			
-			
-			
-			
-
 			return View.prototype.initialize.call(this, options);
 		},
 
 		events: {
 			// 'keydown': 'keyAction',
 		},
+		
+		/*postRender: function() {
+			
+		}*/
 		
 		keyAction: function(e) {
 			
@@ -123,21 +119,6 @@
 				break;
 			}
 		},
-		
-		
-		
-	
-		
-		
-		
-		
-		
-
-		
-
-		/*postRender: function() {
-			
-		}*/
 	});
 
 })(this._, this.Backbone);
