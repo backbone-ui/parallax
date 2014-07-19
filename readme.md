@@ -1,6 +1,6 @@
 # Backbone UI: Parallax
 
-A plugin for creating both vertical and horizontal parallax scrolling. Flexible enough to be used for websites and games.
+A plugin for creating both vertical and horizontal parallax scrolling.
 
 ## Install
 
