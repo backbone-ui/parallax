@@ -1,0 +1,38 @@
+.main .sidebar,
+.main .content {
+  -webkit-transition: all .5s;
+  transition: all .5s;
+}
+@media screen and (max-width: 46.8em) {
+  .main .sidebar {
+    /*left: -80%;*/
+    -webkit-transform: translateX(-100%);
+    -moz-transform: translateX(-100%);
+    -ms-transform: translateX(-100%);
+    -o-transform: translateX(-100%);
+    transform: translateX(-100%);
+  }
+  .main .sidebar.active {
+    /*left: 0%;*/
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    transform: translateX(0);
+  }
+  .main .sidebar.active .ui-drawer-control {
+    content: "\00b6";
+    margin-right: 0px;
+  }
+  .main .sidebar.active .ui-drawer-control:after {
+    /*content:"\00b6";*/
+    content: "\003c";
+  }
+  .main .content.displace {
+    -webkit-transform: translateX(80%);
+    -moz-transform: translateX(80%);
+    -ms-transform: translateX(80%);
+    -o-transform: translateX(80%);
+    transform: translateX(80%);
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "backbone.ui.parallax",
+  "version": "0.2.0",
+  "main": ["./assets/js/backbone.ui.parallax.js"],
+  "dependencies": { 
+	  "backbone" : "0.9.10", 
+	  "underscore" : "1.4.4", 
+	  "jquery" : "1.8.3"
+  }
+}
