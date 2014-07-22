@@ -72,9 +72,12 @@
 		
 		tick: function() {
 			// rendering
+			var self = this;
   			this.render();
   			// Do whatever
-  			window.requestAnimationFrame(this.tick);
+  			window.requestAnimationFrame(function(){
+				self.tick();
+			});
 		},
 		
 		render: function() {
