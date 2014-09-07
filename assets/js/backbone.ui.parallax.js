@@ -210,6 +210,7 @@
 			document.getElementsByTagName("head")[0].appendChild(cssAnimation);
 			// update params
 			params.id = id;
+			params.running = true;
 			this.params.set({
 				parallax: params
 			});
@@ -220,7 +221,8 @@ console.log("animation");
 		},
 
 		_parallaxReset: function(){
-			var id = this.params.get("parallax").id;
+			var params = this.params.get("parallax");
+			var id = params.id;
 			var existing = document.getElementById( id );
 			if( existing ){
 				// commit to the existing background position
@@ -228,6 +230,11 @@ console.log("animation");
 				$(this.el).css("backgroundPosition", positions);
 				// remove node
 				existing.parentNode.removeChild( existing );
+				// update params
+				params.running = false;
+				this.params.set({
+					parrallax: params
+				});
 			}
 		},
 
@@ -244,51 +251,39 @@ console.log("animation");
 		},
 
 		move: function( direction ) {
-			var pause = true,
-				amt = this.options.amount,
-				orientation;
+			var direction_change = false;
 			var params = this.params.get("parallax");
 
 			switch( direction ){
 				case "left":
-					amt += this.options.step;
-					orientation = "left";
-					pause = false;
+					direction_change = (params.direction !== "left");
+					params.direction = "left";
 				break;
 				case "right":
-					amt -= this.options.step;
-					orientation = "right";
-					pause = false;
+					direction_change = (params.direction !== "right");
+					params.direction = "right";
 				break;
 				case "up":
-					amt += this.options.step;
-					orientation = "up";
-					pause = false;
+					direction_change = (params.direction !== "up");
+					params.direction = "up";
 				break;
 				case "down":
-					amt -= this.options.step;
-					orientation = "down";
-					pause = false;
+					direction_change = (params.direction !== "down");
+					params.direction = "down";
 				break;
 				default:
-					pause = true;
 				break;
 			}
 
-			params.direction = orientation;
+			// update params
 			this.params.set({
 				parallax: params
 			});
 
-			this.options.amount = amt;
 			// update animation only if we have to
-			if( this.orientation != orientation ){
+			if( direction_change || !params.running ){
 				this.onStartParallax();
 			}
-			this.orientation = orientation;
-			this.pause = pause;
-
-
 		},
 
 		_getSize: function( css, order ){
