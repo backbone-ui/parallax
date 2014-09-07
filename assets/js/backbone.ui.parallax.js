@@ -18,7 +18,6 @@
 		el : ".ui-parallax",
 
 		options : {
-			parallaxEl : "#parallax",
 			speed: 1,
 			//multiplier
 			amount: 1,
@@ -32,13 +31,7 @@
 			_.bindAll(this, 'keyAction', 'onStopParallax');
 			// extend options
 			if( options.speed ) this.options.speed = options.speed;
-			// var amt = this.options.amount;
-			this.pause = true;
-			// var orientation;
-			// var parallax = this.options.parallaxEl;
-			// start animation loop
-			//this.tick();
-			console.log("I'm parallaxing here");
+			//
 			this.render();
 
 			$(document).bind('keydown', this.keyAction);
@@ -76,15 +69,6 @@
 
 		params: View.prototype.params || new Backbone.Model(),
 
-		tick: function() {
-			// rendering
-			var self = this;
-			this.render();
-			// Do whatever
-			window.requestAnimationFrame(function(){
-				self.tick();
-			});
-		},
 
 		preRender: function() {
 
@@ -141,7 +125,7 @@
 			//
 			var id = params.id || false;
 			// set animation
-			var parallax = $(this.options.parallaxEl)[0];
+			var parallax = $(this.el)[0];
 			// start
 			var fromPos = "";
 			// end
@@ -214,9 +198,6 @@
 			this.params.set({
 				parallax: params
 			});
-console.log("animation");
-			//if ( direction == "left" || direction == "right" ) {
-			//parallax.style.backgroundPosition =  a * 5 + "px bottom," + a * 4 + "px bottom, " + a * 3 + "px bottom," + a * 2 + "px bottom," + a * 1 + "px bottom";
 
 		},
 
@@ -236,18 +217,6 @@ console.log("animation");
 					parrallax: params
 				});
 			}
-		},
-
-		updateBackground: function( o, a ) {
-			var parallax = $(this.options.parallaxEl)[0];
-			//console.log(parallax);
-
-				if ( (o == "left") || (o == "right") ) {
-					parallax.style.backgroundPosition =  a * 5 + "px bottom," + a * 4 + "px bottom, " + a * 3 + "px bottom," + a * 2 + "px bottom," + a * 1 + "px bottom";
-				} else {
-					parallax.style.backgroundPosition =  a * 5 + "px bottom," + a * 4 + "px bottom, " + a * 3 + "px bottom," + a * 2 + "px bottom," + a * 1 + "px bottom";
-					// parallax.style.backgroundPosition =  "left" + this.amt * 5 + "px", "left" + this.amt * 4 + "px" , "left" + this.amt * 3 + "px" ,"left" + this.amt * 2 + "px" ,"left" + this.amt * 1 + "px";
-				}
 		},
 
 		move: function( direction ) {
