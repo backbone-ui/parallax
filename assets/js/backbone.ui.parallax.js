@@ -26,7 +26,10 @@
 		},
 
 		initialize: function( options ){
+			// fallbacks
 			options = options || {};
+			// binds
+			_.bindAll(this, 'keyAction', 'onStopParallax');
 			// extend options
 			if( options.speed ) this.options.speed = options.speed;
 			// var amt = this.options.amount;
@@ -37,8 +40,9 @@
 			//this.tick();
 			console.log("I'm parallaxing here");
 			this.render();
-			_.bindAll(this, 'keyAction');
+
 			$(document).bind('keydown', this.keyAction);
+			$(document).bind('keyup', this.onStopParallax);
 			return View.prototype.initialize.call(this, options);
 		},
 
@@ -114,11 +118,22 @@
 			});
 		},
 
-		_parallaxAnimation: function( direction ) {
+		onStartParallax: function(){
+			this._parallaxAnimation();
+		},
+
+		onStopParallax: function(){
+			this._parallaxReset();
+		},
+		// internal
+
+		_parallaxAnimation: function() {
 			var self = this;
+
 			var random = ( new Date() ).getTime() + Math.abs( Math.random() * 1000 );
 			// get params
 			var params = this.params.get("parallax") || {};
+			var direction = params.direction;
 			var speed = this.options.speed || 1;
 			// get existing positions;
 			var positions = getStyle( $(this.el)[0], 'background-position');
@@ -138,7 +153,7 @@
 				if( !size ){
 					// wait until all images are loaded
 					return setTimeout(function(){
-						self._parallaxAnimation( direction );
+						self._parallaxAnimation();
 					}, 200);
 				}
 				// start from the existing position
@@ -170,8 +185,7 @@
 			}
 			// remove existing animation
 			if( id ){
-				var existing = document.getElementById( id );
-				if( existing ) existing.parentNode.removeChild( existing );
+				this._parallaxReset();
 			}
 			// new id
 			var sequence = ( new Date() ).getTime() + Math.round( Math.random() * 1000 );
@@ -203,7 +217,18 @@ console.log("animation");
 			//if ( direction == "left" || direction == "right" ) {
 			//parallax.style.backgroundPosition =  a * 5 + "px bottom," + a * 4 + "px bottom, " + a * 3 + "px bottom," + a * 2 + "px bottom," + a * 1 + "px bottom";
 
+		},
 
+		_parallaxReset: function(){
+			var id = this.params.get("parallax").id;
+			var existing = document.getElementById( id );
+			if( existing ){
+				// commit to the existing background position
+				var positions = getStyle( $(this.el)[0], 'background-position');
+				$(this.el).css("backgroundPosition", positions);
+				// remove node
+				existing.parentNode.removeChild( existing );
+			}
 		},
 
 		updateBackground: function( o, a ) {
@@ -222,6 +247,7 @@ console.log("animation");
 			var pause = true,
 				amt = this.options.amount,
 				orientation;
+			var params = this.params.get("parallax");
 
 			switch( direction ){
 				case "left":
@@ -249,13 +275,19 @@ console.log("animation");
 				break;
 			}
 
+			params.direction = orientation;
+			this.params.set({
+				parallax: params
+			});
+
 			this.options.amount = amt;
 			// update animation only if we have to
 			if( this.orientation != orientation ){
-				this._parallaxAnimation( orientation );
+				this.onStartParallax();
 			}
 			this.orientation = orientation;
 			this.pause = pause;
+
 
 		},
 
