@@ -25,77 +25,84 @@
 
 		initialize: function( options ){
 			var self = this;
-			
+
 			// var amt = this.options.amount;
-			// var pause = true;
+			this.pause = true;
 			// var orientation;
 			// var parallax = this.options.parallaxEl;
-			// start animation loop	
-			// this.tick();
+			// start animation loop
+			this.tick();
 			console.log("I'm parallaxing here");
 			_.bindAll(this, 'keyAction');
-    		$(document).bind('keydown', this.keyAction);
+			$(document).bind('keydown', this.keyAction);
 			return View.prototype.initialize.call(this, options);
 		},
 
 		events: {
 			// 'keydown': 'keyAction',
 		},
-		
+
 		/*postRender: function() {
-			
+
 		}*/
-		
+
 		keyAction: function(e) {
-			
-        	var code = e.keyCode || e.which;
-				if( code === 37 ) { 
-					console.log("left");
-            		// this.move("left");
-        		}
-				
+
+			var code = e.keyCode || e.which;
+				if( code === 37 ) {
+					//console.log("left");
+					this.move("left");
+				}
+
 				if ( code === 39 ) {
-					console.log("right");
-					// this.move("right");
+					//console.log("right");
+					this.move("right");
 				}
-				
+
 				if ( code === 38 ) {
-					console.log("up");
-					// this.move("up");
+					//console.log("up");
+					this.move("up");
 				}
-				
+
 				if ( code === 40 ) {
-					console.log("down");
-					// this.move("down");
+					//console.log("down");
+					this.move("down");
 				}
 		},
-		
+
 		tick: function() {
 			// rendering
 			var self = this;
-  			this.render();
-  			// Do whatever
-  			window.requestAnimationFrame(function(){
+			this.render();
+			// Do whatever
+			window.requestAnimationFrame(function(){
 				self.tick();
 			});
 		},
-		
+
 		render: function() {
 			if( this.pause ) return;
-			this.updateBackground(this.orientation, this.amt);
+			var amount = this.options.amount;
+			this.updateBackground(this.orientation, amount);
 		},
-		
+
 		updateBackground: function( o, a ) {
-			console.log(o);
+			var parallax = $(this.options.parallaxEl)[0];
+			//console.log(parallax);
+
 				if ( (o == "left") || (o == "right") ) {
-					parallax.style.backgroundPosition =  this.amt * 5 + "px bottom," + this.amt * 4 + "px bottom, " + this.amt * 3 + "px bottom," + this.amt * 2 + "px bottom," + this.amt * 1 + "px bottom";
+					parallax.style.backgroundPosition =  a * 5 + "px bottom," + a * 4 + "px bottom, " + a * 3 + "px bottom," + a * 2 + "px bottom," + a * 1 + "px bottom";
 				} else {
-					parallax.style.backgroundPosition =  this.amt * 5 + "px bottom," + this.amt * 4 + "px bottom, " + this.amt * 3 + "px bottom," + this.amt * 2 + "px bottom," + this.amt * 1 + "px bottom";
+					parallax.style.backgroundPosition =  a * 5 + "px bottom," + a * 4 + "px bottom, " + a * 3 + "px bottom," + a * 2 + "px bottom," + a * 1 + "px bottom";
 					// parallax.style.backgroundPosition =  "left" + this.amt * 5 + "px", "left" + this.amt * 4 + "px" , "left" + this.amt * 3 + "px" ,"left" + this.amt * 2 + "px" ,"left" + this.amt * 1 + "px";
 				}
 		},
-		
+
 		move: function( direction ) {
+			var pause = true,
+				amt = this.options.amount,
+				orientation;
+
 			switch( direction ){
 				case "left":
 					amt += this.options.step;
@@ -121,6 +128,11 @@
 					pause = true;
 				break;
 			}
+
+			this.options.amount = amt;
+			this.orientation = orientation;
+			this.pause = pause;
+
 		},
 	});
 
