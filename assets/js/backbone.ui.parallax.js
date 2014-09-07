@@ -31,7 +31,7 @@
 			// var orientation;
 			// var parallax = this.options.parallaxEl;
 			// start animation loop
-			this.tick();
+			//this.tick();
 			console.log("I'm parallaxing here");
 			_.bindAll(this, 'keyAction');
 			$(document).bind('keydown', this.keyAction);
@@ -70,6 +70,8 @@
 				}
 		},
 
+		params: View.prototype.params || new Backbone.Model(),
+
 		tick: function() {
 			// rendering
 			var self = this;
@@ -84,6 +86,69 @@
 			if( this.pause ) return;
 			var amount = this.options.amount;
 			this.updateBackground(this.orientation, amount);
+		},
+
+		_parallaxAnimation: function( direction ) {
+			var random = ( new Date() ).getTime() + Math.abs( Math.random() * 1000 );
+			// get params
+			var params = this.params.get("parallax") || {};
+			var id = params.id || false;
+			// set animation
+			var parallax = $(this.options.parallaxEl)[0];
+			//console.log(parallax);
+			// start
+			var fromPos = "-100px 0";
+			// end
+			var toPos = "-100px 0";
+			if ( direction == "left" ){
+				// start
+				var fromPos = "0 0";
+				// end
+				var toPos = "-100px 0";
+			}
+			if( direction == "right" ) {
+				// start
+				var fromPos = "0 0";
+				// end
+				var toPos = "100px 0";
+			}
+
+			// remove existing animation
+			if( id ){
+				var existing = document.getElementById( id );
+				if( existing ) existing.parentNode.removeChild( existing );
+			}
+			// new id
+			var sequence = ( new Date() ).getTime() + Math.round( Math.random() * 1000 );
+			id = "ui-parallax-"+ sequence;
+			// create new animation
+			var cssAnimation = document.createElement('style');
+			cssAnimation.setAttribute("id", id);
+			cssAnimation.type = 'text/css';
+			// css rules
+			var rules = document.createTextNode('@-webkit-keyframes '+ id +' {'+
+			'from { background-position: '+ fromPos +'; }'+
+			'to { background-position: '+ toPos +'; } '+
+			'} ' +"\n"+
+			'#parallax {'+
+			'	-webkit-animation-name: '+ id +';'+
+			'	-webkit-animation-duration: 10s;'+
+			'	-webkit-animation-timing-function: linear;'+
+			'	-webkit-animation-iteration-count: infinite;'+
+			'}'
+			);
+			cssAnimation.appendChild(rules);
+			document.getElementsByTagName("head")[0].appendChild(cssAnimation);
+			// update params
+			params.id = id;
+			this.params.set({
+				parallax: params
+			});
+console.log("animation");
+			//if ( direction == "left" || direction == "right" ) {
+			//parallax.style.backgroundPosition =  a * 5 + "px bottom," + a * 4 + "px bottom, " + a * 3 + "px bottom," + a * 2 + "px bottom," + a * 1 + "px bottom";
+
+
 		},
 
 		updateBackground: function( o, a ) {
@@ -130,6 +195,10 @@
 			}
 
 			this.options.amount = amt;
+			// update animation only if we have to
+			if( this.orientation != orientation ){
+				this._parallaxAnimation( orientation );
+			}
 			this.orientation = orientation;
 			this.pause = pause;
 
