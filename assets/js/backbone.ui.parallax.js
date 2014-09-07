@@ -18,10 +18,8 @@
 		el : ".ui-parallax",
 
 		options : {
-			speed: 1,
-			//multiplier
-			amount: 1,
-			step: 1
+			speed: 1, // the relative speed of the layers
+			time: 10 // interval between loops ( in seconds )
 		},
 
 		initialize: function( options ){
@@ -76,9 +74,6 @@
 
 		//render: View.prototype.render || function() {
 		render: function() {
-			//if( this.pause ) return;
-			//var amount = this.options.amount;
-			//this.updateBackground(this.orientation, amount);
 			this.preRender();
 			this.postRender();
 		},
@@ -185,7 +180,7 @@
 			'} ' +"\n"+
 			'#parallax {'+
 			'	-webkit-animation-name: '+ id +';'+
-			'	-webkit-animation-duration: 10s;'+
+			'	-webkit-animation-duration: '+ this.options.time +'s;'+
 			'	-webkit-animation-timing-function: linear;'+
 			'	-webkit-animation-iteration-count: infinite;'+
 			'}'
