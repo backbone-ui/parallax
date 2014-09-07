@@ -26,8 +26,9 @@
 		},
 
 		initialize: function( options ){
-			var self = this;
-
+			options = options || {};
+			// extend options
+			if( options.speed ) this.options.speed = options.speed;
 			// var amt = this.options.amount;
 			this.pause = true;
 			// var orientation;
@@ -96,14 +97,14 @@
 
 		postRender: function() {
 			var $el = $(this.el);
-			var params = this.params.get("params");
+			var params = this.params.get("parallax") || {};
 			//
 			$el.addClass("ui-parallax");
 			// count backgrounds
 			var backgrounds = getStyle( $el[0], 'background-image');
 			params.count = backgrounds.split(",").length;
 			this.params.set({
-				params: params
+				parallax: params
 			});
 		},
 
@@ -112,28 +113,47 @@
 			// get params
 			var params = this.params.get("parallax") || {};
 			var speed = this.options.speed || 1;
-			var positions = [];
+			// ger existing positions;
+			var positions = getStyle( $(this.el)[0], 'background-position');
+			positions = positions.split(",");
+			//
 			var id = params.id || false;
 			// set animation
 			var parallax = $(this.options.parallaxEl)[0];
 			//console.log(parallax);
 			// start
-			var fromPos = "-100px 0";
+			var fromPos = "";
 			// end
-			var toPos = "-100px 0";
-			if ( direction == "left" ){
-				// start
-				var fromPos = "0 0";
-				// end
-				var toPos = "-100px 0";
-			}
-			if( direction == "right" ) {
-				// start
-				var fromPos = "0 0";
-				// end
-				var toPos = "100px 0";
-			}
+			var toPos = "";
+			//
+			for( var i = 0; i < params.count; i++ ){
+				// start from the existing position
+				pos = positions[i];
+				// FIX: remove empty space
+				pos = pos.split(" ");
+				if( _.isEmpty( pos[0] ) ) pos.shift();
+				var x = 0;
+				var y = 0;
+				var s = ( speed instanceof Array ) ? speed[i] : speed;
+				switch( direction ){
+					case "left":
+						x = s * ( parseInt(pos[0]) + 100) +"px";
+						y = pos[1];
+					break;
+					case "right":
+						x = -1 * s * ( parseInt(pos[0]) + 100) +"px";
+						y = pos[1];
+					break;
+				}
 
+				fromPos += positions[i];
+				toPos += x +" "+ y;
+				//
+				if( i < params.count-1 ){
+					fromPos += ", ";
+					toPos += ", ";
+				}
+			}
 			// remove existing animation
 			if( id ){
 				var existing = document.getElementById( id );
