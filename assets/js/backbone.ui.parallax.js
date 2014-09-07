@@ -137,11 +137,11 @@
 				var s = ( speed instanceof Array ) ? speed[i] : speed;
 				switch( direction ){
 					case "left":
-						x = s * ( parseInt(pos[0]) + 100) +"px";
+						x = parseInt(pos[0]) + s * ( 100) +"px";
 						y = pos[1];
 					break;
 					case "right":
-						x = -1 * s * ( parseInt(pos[0]) + 100) +"px";
+						x = parseInt(pos[0]) - s * ( 100) +"px";
 						y = pos[1];
 					break;
 				}
