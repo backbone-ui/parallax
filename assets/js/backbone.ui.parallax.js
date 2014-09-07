@@ -15,10 +15,12 @@
 
 	Backbone.UI.Parallax = View.extend({
 
-		el : '.main',
+		el : ".ui-parallax",
 
 		options : {
 			parallaxEl : "#parallax",
+			speed: 1,
+			//multiplier
 			amount: 1,
 			step: 1
 		},
@@ -33,6 +35,7 @@
 			// start animation loop
 			//this.tick();
 			console.log("I'm parallaxing here");
+			this.render();
 			_.bindAll(this, 'keyAction');
 			$(document).bind('keydown', this.keyAction);
 			return View.prototype.initialize.call(this, options);
@@ -41,10 +44,6 @@
 		events: {
 			// 'keydown': 'keyAction',
 		},
-
-		/*postRender: function() {
-
-		}*/
 
 		keyAction: function(e) {
 
@@ -82,16 +81,38 @@
 			});
 		},
 
+		preRender: function() {
+
+		},
+
+		//render: View.prototype.render || function() {
 		render: function() {
-			if( this.pause ) return;
-			var amount = this.options.amount;
-			this.updateBackground(this.orientation, amount);
+			//if( this.pause ) return;
+			//var amount = this.options.amount;
+			//this.updateBackground(this.orientation, amount);
+			this.preRender();
+			this.postRender();
+		},
+
+		postRender: function() {
+			var $el = $(this.el);
+			var params = this.params.get("params");
+			//
+			$el.addClass("ui-parallax");
+			// count backgrounds
+			var backgrounds = getStyle( $el[0], 'background-image');
+			params.count = backgrounds.split(",").length;
+			this.params.set({
+				params: params
+			});
 		},
 
 		_parallaxAnimation: function( direction ) {
 			var random = ( new Date() ).getTime() + Math.abs( Math.random() * 1000 );
 			// get params
 			var params = this.params.get("parallax") || {};
+			var speed = this.options.speed || 1;
+			var positions = [];
 			var id = params.id || false;
 			// set animation
 			var parallax = $(this.options.parallaxEl)[0];
@@ -204,5 +225,11 @@ console.log("animation");
 
 		},
 	});
+
+	function getStyle(x, styleProp) {
+		if (x.currentStyle) var y = x.currentStyle[styleProp];
+		else if (window.getComputedStyle) var y = document.defaultView.getComputedStyle(x, null).getPropertyValue(styleProp);
+		return y;
+	}
 
 })(this._, this.Backbone);
