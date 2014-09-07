@@ -101,32 +101,46 @@
 			//
 			$el.addClass("ui-parallax");
 			// count backgrounds
-			var backgrounds = getStyle( $el[0], 'background-image');
-			params.count = backgrounds.split(",").length;
+			var backgrounds = getStyle( $el[0], 'background-image').split(",");
+			// find image sizes
+			params.sizes = [];
+			for( var i in backgrounds ){
+				this._getSize( backgrounds[i], i );
+			}
+			params.count = backgrounds.length;
+			//
 			this.params.set({
 				parallax: params
 			});
 		},
 
 		_parallaxAnimation: function( direction ) {
+			var self = this;
 			var random = ( new Date() ).getTime() + Math.abs( Math.random() * 1000 );
 			// get params
 			var params = this.params.get("parallax") || {};
 			var speed = this.options.speed || 1;
-			// ger existing positions;
+			// get existing positions;
 			var positions = getStyle( $(this.el)[0], 'background-position');
 			positions = positions.split(",");
 			//
 			var id = params.id || false;
 			// set animation
 			var parallax = $(this.options.parallaxEl)[0];
-			//console.log(parallax);
 			// start
 			var fromPos = "";
 			// end
 			var toPos = "";
 			//
 			for( var i = 0; i < params.count; i++ ){
+				// first check that we have the image dimensions
+				var size = params.sizes[i];
+				if( !size ){
+					// wait until all images are loaded
+					return setTimeout(function(){
+						self._parallaxAnimation( direction );
+					}, 200);
+				}
 				// start from the existing position
 				pos = positions[i];
 				// FIX: remove empty space
@@ -137,11 +151,11 @@
 				var s = ( speed instanceof Array ) ? speed[i] : speed;
 				switch( direction ){
 					case "left":
-						x = parseInt(pos[0]) + s * ( 100) +"px";
+						x = parseInt(pos[0]) + s * size[0] +"px";
 						y = pos[1];
 					break;
 					case "right":
-						x = parseInt(pos[0]) - s * ( 100) +"px";
+						x = parseInt(pos[0]) - s * size[0] +"px";
 						y = pos[1];
 					break;
 				}
@@ -244,6 +258,26 @@ console.log("animation");
 			this.pause = pause;
 
 		},
+
+		_getSize: function( css, order ){
+
+			var self = this;
+			// find "pure" url;
+			var url = css.replace(/ |url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
+
+			var image = new Image();
+			image.src = url;
+
+			image.onload = function(){
+				var params = self.params.get("parallax");
+				params.sizes[order] = [this.width, this.height];
+				self.params.set({
+					parallax: params
+				});
+			}
+
+		}
+
 	});
 
 	function getStyle(x, styleProp) {
