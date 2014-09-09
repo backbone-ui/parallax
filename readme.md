@@ -2,6 +2,12 @@
 
 A plugin for creating both vertical and horizontal parallax scrolling.
 
+## Examples
+
+* [Infinite loop](http://rawgit.com/backbone-ui/parallax/master/examples/loop.html)
+* [Interactive with arrow keys](http://rawgit.com/backbone-ui/parallax/master/examples/keys.html)
+* [Layers in CSS3D](http://rawgit.com/backbone-ui/parallax/master/examples/layers.html)
+
 ## Install
 
 Using bower:
@@ -19,7 +25,7 @@ bower install backbone.ui.parallax
 
 ```
 var view = new Backbone.UI.Parallax({
-		el : ".main"
+		el : ".ui-parallax"
 });
 view.render();
 ```
@@ -30,10 +36,6 @@ view.render();
 A more detailed list of all the available options.
 
 
-
-## Examples
-
-* [Static example](http://rawgithub.com/backbone-ui/parallax/master/examples/static.html)
 
 
 ## Credits
