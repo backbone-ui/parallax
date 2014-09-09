@@ -26,9 +26,11 @@
 			// fallbacks
 			options = options || {};
 			// binds
-			_.bindAll(this, 'onStopParallax');
+			_.bindAll(this, 'onStopParallax', '_parallaxAnimation', '_parallaxReset');
 			// extend options
 			if( options.speed ) this.options.speed = options.speed;
+			// FIX: params bleed out to other instances
+			this.params = new Backbone.Model();
 			//
 			this.render();
 			return View.prototype.initialize.call(this, options);
@@ -100,8 +102,6 @@
 
 		_parallaxAnimation: function() {
 			var self = this;
-
-			var random = ( new Date() ).getTime() + Math.abs( Math.random() * 1000 );
 			// get params
 			var params = this.params.get("parallax") || {};
 			var direction = params.direction;
