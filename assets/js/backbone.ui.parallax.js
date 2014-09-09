@@ -30,13 +30,13 @@
 			// extend options
 			if( options.speed ) this.options.speed = options.speed;
 			// FIX: params bleed out to other instances
-			this.params = new Backbone.Model();
+			this.params = this.params || new Backbone.Model();
 			//
 			this.render();
 			return View.prototype.initialize.call(this, options);
 		},
 
-		params: View.prototype.params || new Backbone.Model(),
+		//params: View.prototype.params || new Backbone.Model(),
 
 
 		preRender: function() {
