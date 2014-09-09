@@ -27,7 +27,7 @@ bower install backbone.ui.parallax
 var view = new Backbone.UI.Parallax({
 		el : ".ui-parallax"
 });
-view.render();
+view.startParallax();
 ```
 
 
