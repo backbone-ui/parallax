@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Backbone UI Parallax: Layers</title>
+<title>Backbone UI Parallax: CSS3D Layers</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -11,13 +11,8 @@
 <link type="text/css" href="../assets/less/backbone.ui.parallax.less" media="screen" rel="stylesheet/less">
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.3.3/less.min.js"></script>
 
+<link rel="stylesheet" href="assets/css/styles.css" type="text/css" media="screen">
 <style>
-html, body {
-	font-family:'Open Sans', helvetic, sans-serif;
-	height:100%;
-	font-size:85%;
-	background-color: #c7eef9;
-}
 
 @-webkit-keyframes camera-loop {
 		from {
@@ -121,9 +116,13 @@ div.sky {
 </head>
 <body>
 
+<div class="info">
+	<p>Adding the third dimension, now the images are split into separate layers and positioned in 3D space. <a href="loop.html">next &gt;</a></p>
+</div>
+
 <div class="main">
 	<div class="scroller">
-		<div class="character"></div>
+		<!-- div class="character"></div -->
 		<div class="foreground"></div>
 		<div class="hills-near"></div>
 		<div class="hills-mid"></div>
