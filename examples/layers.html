@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Backbone UI Parallax: Layers</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<!-- link rel="stylesheet" href="../assets/css/backbone.ui.parallax.css" type="text/css" media="screen" -->
+<link type="text/css" href="../assets/less/backbone.ui.parallax.less" media="screen" rel="stylesheet/less">
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/less.js/1.3.3/less.min.js"></script>
+
+<style>
+html, body {
+	font-family:'Open Sans', helvetic, sans-serif;
+	height:100%;
+	font-size:85%;
+	background-color: #c7eef9;
+}
+
+@-webkit-keyframes camera-loop {
+		from {
+			transform: rotate3d(0, 0, 0, 0) translate3d( 0, -200px, 300px );
+		} to {
+			transform: rotate3d(0, 1, 0, 60deg) translate3d( 0, -200px, 500px );
+		}
+	}
+
+div.main {
+	width:100%;
+	height:100%;
+	overflow: hidden;
+	/* CSS3D */
+	perspective: 700px;
+}
+
+div.scroller {
+	width:100%;
+	height:100%;
+	/* CSS3D */
+	transform-style: preserve-3d;
+	-webkit-animation: camera-loop 4s ease-in-out -4s infinite alternate forwards;
+	-webkit-animation-delay: 4s;
+}
+
+div.character {
+	position:absolute;
+	bottom:-10px;
+	left:40%;
+	width:141px;
+	height:399px;
+	background:url(assets/img/character.png) 0 bottom repeat-x;
+	z-index:999;
+}
+
+div.foreground {
+	position:absolute;
+	bottom:-10px;
+	left:0;
+	width:100%;
+	height:226px;
+	background:url(assets/img/grass.png) 0 bottom repeat-x;
+	z-index: 80;
+	/* CSS3D */
+	transform: translateZ( 0 );
+}
+
+div.hills-near {
+	position:absolute;
+	bottom:0;
+	left:0;
+	width:100%;
+	height:226px;
+	background:url(assets/img/hills-near-tree.png) 0 bottom repeat-x;
+	z-index: 50;
+	/* CSS3D */
+	transform: translateZ( -100px );
+}
+
+div.hills-mid {
+	position:absolute;
+	bottom:0;
+	left:0;
+	width:100%;
+	height:226px;
+	background:url(assets/img/hills-mid-tree.png) 0 bottom repeat-x;
+	z-index: 10;
+	/* CSS3D */
+	transform: translateZ( -200px );
+}
+
+div.hills-far {
+	position:absolute;
+	bottom:0;
+	left:0;
+	width:100%;
+	height:273px;
+	background:url(assets/img/hills-far-tree.png) 0 bottom repeat-x;
+	z-index: 5;
+	/* CSS3D */
+	transform: translateZ( -300px );
+}
+
+div.sky {
+	position:absolute;
+	bottom:0;
+	left: 0;
+	width:100%;
+	height:100%;
+	margin:0 auto;
+	background:url(assets/img/background-clouds.jpg) 0 bottom repeat-x;
+	background-position: ;
+	z-index: 1;
+	/* CSS3D */
+	transform: translateZ( -400px );
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="main">
+	<div class="scroller">
+		<div class="character"></div>
+		<div class="foreground"></div>
+		<div class="hills-near"></div>
+		<div class="hills-mid"></div>
+		<div class="hills-far"></div>
+		<div class="sky"></div>
+	</div>
+</div>
+
+<script type="text/javascript" src="//rawgithub.com/commons/common.js/master/build/common-min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+
+
+<script type="text/javascript" src="../assets/js/backbone.ui.parallax.js"></script>
+<script type="text/javascript">
+// instantiate views
+var foreground = new Backbone.UI.Parallax({
+	el: ".foreground",
+	speed: 5
+});
+var hills_near = new Backbone.UI.Parallax({
+	el: ".hills-near",
+	speed: 4
+});
+var hills_mid = new Backbone.UI.Parallax({
+	el: ".hills-mid",
+	speed: 3
+});
+var hills_far = new Backbone.UI.Parallax({
+	el: ".hills-far",
+	speed: 2
+});
+var sky = new Backbone.UI.Parallax({
+	el: ".sky",
+	speed: 1
+});
+
+// initiate parallax
+foreground.startParallax("right");
+hills_near.startParallax("right");
+hills_mid.startParallax("right");
+hills_far.startParallax("right");
+sky.startParallax("right");
+
+</script>
+</body>
+</html>
