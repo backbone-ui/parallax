@@ -6,7 +6,7 @@
 // Licensed under the MIT license:
 // http://makesites.org/licenses/MIT
 
-(function(_, Backbone) {
+(function($, _, Backbone) {
 
 	// fallbacks
 	if( _.isUndefined( Backbone.UI ) ) Backbone.UI = {};
@@ -118,6 +118,7 @@
 			// end
 			var toPos = "";
 			//
+
 			for( var i = 0; i < params.count; i++ ){
 				// first check that we have the image dimensions
 				var size = params.sizes[i];
@@ -170,7 +171,7 @@
 			'from { background-position: '+ fromPos +'; }'+
 			'to { background-position: '+ toPos +'; } '+
 			'} ' +"\n"+
-			'#parallax {'+
+			$(this.el).getPath() +' {'+
 			'	-webkit-animation-name: '+ id +';'+
 			'	-webkit-animation-duration: '+ this.options.time +'s;'+
 			'	-webkit-animation-timing-function: linear;'+
@@ -233,4 +234,33 @@
 		return y;
 	}
 
-})(this._, this.Backbone);
+	function getSelector( node ){
+		// get tag name
+		var selector = node.localName || node.tagName.toLowerCase();
+		// add id
+		var id = node.id || false;
+		if( id ) selector += "#"+ id;
+		// add classes
+		var classes = node.classList;
+		for(var i in classes){
+			// FIX: classList contains methods too :P
+			if( isNaN(i) ) continue;
+			selector += "."+ classes[i];
+		}
+
+		return selector;
+	}
+
+	$.fn.getPath = function () {
+		if (this.length != 1) throw 'Requires one element.';
+
+		var path, $el = this, node = $el[0], parent = $el.parent()[0];
+
+		// get selector for parent & el...
+		path = getSelector( parent ) +" > "+ getSelector( node );
+
+		//that should be enough?
+		return path;
+	};
+
+})(this.$, this._, this.Backbone);
