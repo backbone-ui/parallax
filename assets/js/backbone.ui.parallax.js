@@ -97,6 +97,18 @@
 			});
 		},
 
+		startParallax: function( direction ){
+			direction = direction || false;
+			if( direction ){
+				this.setParam({
+					direction: direction
+				});
+			}
+			// trigger event
+			this.onStartParallax();
+		},
+
+
 		onStartParallax: function(){
 			this._parallaxAnimation();
 		},
@@ -104,6 +116,17 @@
 		onStopParallax: function(){
 			this._parallaxReset();
 		},
+
+		// updates params on the "namespace of the plugin
+		setParam: function( data ){
+			data = data || {};
+			var params = this.params.get("parallax");
+			params = _.extend({}, params, data);
+			this.params.set({
+				parallax: params
+			});
+		},
+
 		// internal
 
 		_parallaxAnimation: function() {
