@@ -10,10 +10,13 @@ html, body {
 
 
 .info {
+	position: fixed;
+	width: 100%;
 	padding: 24px;
 	background: rgba( 0, 0, 0, 0.5 );
 	color: #fff;
 	font-size: 2em;
+	z-index: 9999;
 }
 
 .info a {
