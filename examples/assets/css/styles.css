@@ -9,16 +9,16 @@ html, body {
 }
 
 
-.info {
+header {
 	position: fixed;
 	width: 100%;
 	padding: 24px;
 	background: rgba( 0, 0, 0, 0.5 );
 	color: #fff;
-	font-size: 2em;
+	font-size: 1.5em;
 	z-index: 9999;
 }
 
-.info a {
+header a {
 	color: #fff;
 }
