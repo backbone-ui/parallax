@@ -26,43 +26,12 @@
 			// fallbacks
 			options = options || {};
 			// binds
-			_.bindAll(this, 'keyAction', 'onStopParallax');
+			_.bindAll(this, 'onStopParallax');
 			// extend options
 			if( options.speed ) this.options.speed = options.speed;
 			//
 			this.render();
-
-			$(document).bind('keydown', this.keyAction);
-			$(document).bind('keyup', this.onStopParallax);
 			return View.prototype.initialize.call(this, options);
-		},
-
-		events: {
-			// 'keydown': 'keyAction',
-		},
-
-		keyAction: function(e) {
-
-			var code = e.keyCode || e.which;
-				if( code === 37 ) {
-					//console.log("left");
-					this.move("left");
-				}
-
-				if ( code === 39 ) {
-					//console.log("right");
-					this.move("right");
-				}
-
-				if ( code === 38 ) {
-					//console.log("up");
-					this.move("up");
-				}
-
-				if ( code === 40 ) {
-					//console.log("down");
-					this.move("down");
-				}
 		},
 
 		params: View.prototype.params || new Backbone.Model(),
@@ -234,42 +203,6 @@
 				this.params.set({
 					parrallax: params
 				});
-			}
-		},
-
-		move: function( direction ) {
-			var direction_change = false;
-			var params = this.params.get("parallax");
-
-			switch( direction ){
-				case "left":
-					direction_change = (params.direction !== "left");
-					params.direction = "left";
-				break;
-				case "right":
-					direction_change = (params.direction !== "right");
-					params.direction = "right";
-				break;
-				case "up":
-					direction_change = (params.direction !== "up");
-					params.direction = "up";
-				break;
-				case "down":
-					direction_change = (params.direction !== "down");
-					params.direction = "down";
-				break;
-				default:
-				break;
-			}
-
-			// update params
-			this.params.set({
-				parallax: params
-			});
-
-			// update animation only if we have to
-			if( direction_change || !params.running ){
-				this.onStartParallax();
 			}
 		},
 
